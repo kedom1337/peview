@@ -2,6 +2,12 @@
 
 A minimal and fast zero-copy parser for the PE32+ file format.
 
+[![Build status](https://github.com/kedom1337/peview/workflows/ci/badge.svg)](https://github.com/kedom1337/peview/actions)
+[![Docs.rs](https://img.shields.io/docsrs/peview)](https://docs.rs/peview/latest/peview)
+[![Crates.io](https://img.shields.io/crates/v/peview.svg)](https://crates.io/crates/peview)
+
+## Goal
+
 This project aims to offer a more light weight and easier to use alternative to 
 fully featured binary parsing libraries when it comes to parsing the PE32+ file format. It does so by:
 
