@@ -3,9 +3,9 @@
 
 extern crate alloc;
 
-pub mod mem;
-pub mod error;
 pub mod dir;
-pub mod header;
-pub mod section;
+pub mod error;
 pub mod file;
+pub mod header;
+pub mod mem;
+pub mod section;
