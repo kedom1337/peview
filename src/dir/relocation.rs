@@ -2,7 +2,7 @@ use crate::{dir::*, error::*, impl_from_bytes, mem::*};
 use alloc::format;
 use core::mem;
 
-/// Relocation entry of a relocation block 
+/// Relocation entry of a relocation block
 /// Values are defined by [MSDN](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#base-relocation-types)
 pub enum Relocation {
     Absolute(u16),
