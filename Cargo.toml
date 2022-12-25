@@ -5,7 +5,7 @@ description = "A minimal and fast zero-copy parser for the PE32+ file format."
 keywords = ["parser", "pe", "object", "executable"]
 categories = ["parser-implementations", "no-std"]
 
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 
 repository = "https://github.com/kedom1337/peview"
