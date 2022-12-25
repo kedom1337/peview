@@ -1,4 +1,4 @@
-use crate::{error::*, header::*, mem::ByteReader};
+use crate::{error::*, file::PeAddr, header::*, mem::ByteReader};
 use core::str;
 
 /// Section of a PE32+ file
@@ -67,10 +67,17 @@ impl<'a> Section<'a> {
         self.data.is_none()
     }
 
-    /// Checks if the specified RVA is contained within the sections raw data.
-    pub fn contains_rva(&self, rva: u32) -> bool {
-        (self.header.virtual_address
-            ..self.header.virtual_address + self.header.virtual_size)
-            .contains(&rva)
+    /// Checks if the specified address is contained within the sections raw data.
+    pub fn contains_addr(&self, addr: PeAddr) -> bool {
+        let range = match addr {
+            PeAddr::Rva(rva) => {
+                (self.header.virtual_address, self.header.virtual_size, rva)
+            }
+            PeAddr::FilePtr(ptr) => {
+                (self.header.raw_data_address, self.header.raw_data_size, ptr)
+            }
+        };
+
+        (range.0..range.0 + range.1).contains(&range.2)
     }
 }

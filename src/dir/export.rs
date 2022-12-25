@@ -79,7 +79,7 @@ impl<'a> ExportTable<'a> {
 impl<'a> DataDirectoryTable<'a> for ExportTable<'a> {
     fn new(bytes: &'a [u8], dir: &'a DataDirectory) -> Self {
         Self {
-            data: ByteReader::new_with_rel(bytes, dir.rva as usize),
+            data: ByteReader::new_with_rel(bytes, dir.addr as usize),
             dir,
             export_table: None,
             index: (0, 0),
@@ -131,7 +131,7 @@ impl<'a> Iterator for ExportTable<'a> {
             }
 
             // Check if the current EAT entry is a forward export or a normal RVA
-            let value = if self.dir.contains_rva(*rva) {
+            let value = if self.dir.contains_addr(*rva) {
                 ExportValue::Forward(str_from_bytes(
                     self.data.bytes_at(*rva as usize)?,
                 )?)

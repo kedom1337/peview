@@ -93,7 +93,7 @@ pub struct ImportTable<'a> {
 impl<'a> DataDirectoryTable<'a> for ImportTable<'a> {
     fn new(bytes: &'a [u8], dir: &'a DataDirectory) -> Self {
         Self {
-            data: ByteReader::new_with_rel(bytes, dir.rva as usize),
+            data: ByteReader::new_with_rel(bytes, dir.addr as usize),
         }
     }
 

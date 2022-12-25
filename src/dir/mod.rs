@@ -29,14 +29,14 @@ pub enum DataDirectoryType {
 #[derive(Clone, Copy)]
 #[repr(C)]
 pub struct DataDirectory {
-    pub rva: u32,
+    pub addr: u32,
     pub size: u32,
 }
 
 impl DataDirectory {
     /// Checks if the specified RVA is within the bounds of this [`DataDirectory`]
-    pub fn contains_rva(&self, rva: u32) -> bool {
-        (self.rva..self.rva + self.size).contains(&rva)
+    pub fn contains_addr(&self, addr: u32) -> bool {
+        (self.addr..self.addr + self.size).contains(&addr)
     }
 }
 

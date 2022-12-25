@@ -2,6 +2,15 @@ use crate::{dir::*, error::*, header::*, mem::*, section::Section};
 use alloc::vec::Vec;
 use core::mem;
 
+/// Address that represents a position within a [`PeView`]
+#[derive(Clone, Copy)]
+pub enum PeAddr {
+    /// Relative virtual address
+    Rva(u32),
+    /// Absolute offset within the file
+    FilePtr(u32),
+}
+
 /// View of a PE32+ file
 pub struct PeView<'a> {
     dos_header: &'a DosHeader,
@@ -72,13 +81,13 @@ impl<'a> PeView<'a> {
     }
 
     /// Returns a reference to a single section of this [`PeView`],
-    /// who's raw data contains the specified RVA.
+    /// who's raw data contains the specified address.
     ///
     /// Returns [`None`] if no such section is found.
-    pub fn section_by_rva(&self, rva: u32) -> Option<&Section> {
+    pub fn section_by_addr(&self, addr: PeAddr) -> Option<&Section> {
         self.sections
             .iter()
-            .find(|s| !s.empty() && s.contains_rva(rva))
+            .find(|s| !s.empty() && s.contains_addr(addr))
     }
 
     /// Returns a reference to a single section of this [`PeView`],
@@ -162,15 +171,17 @@ impl<'a> PeView<'a> {
     where
         T: DataDirectoryTable<'a>,
     {
-        // Get the data directory
+        // Get the data directory and raw data of table
         let directory = self.directory(typ).ok_or(Error::DataDirectoryEmpty)?;
-        // Get the raw data of the required section
-        let data = self
-            .section_by_rva(directory.rva)
-            .ok_or(Error::SectionEmpty)?
-            .data()
-            .as_ref()
-            .unwrap();
+        let data = match typ {
+            DataDirectoryType::CertificateTable => &self.data,
+            _ => self
+                .section_by_addr(PeAddr::Rva(directory.addr))
+                .ok_or(Error::SectionEmpty)?
+                .data()
+                .as_ref()
+                .unwrap(),
+        };
 
         // Validate the length of the sections raw data
         if data.bytes().len() <= directory.size as usize {
