@@ -2,6 +2,11 @@ use crate::error::*;
 use alloc::string::ToString;
 use core::{ffi::CStr, mem};
 
+/// Aligns the value up to the specified alignment boundary
+pub fn algin_up(value: usize, align: usize) -> usize {
+    value + ((align - (value & (align - 1))) & (align - 1))
+}
+
 /// Creates a [`str`] slice from the specified bytes.
 ///
 /// # Errors

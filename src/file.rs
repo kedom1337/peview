@@ -16,6 +16,7 @@ pub struct PeView<'a> {
     dos_header: &'a DosHeader,
     nt_header: &'a NtHeader,
     sections: Vec<Section<'a>>,
+    data: ByteReader<'a>,
 }
 
 impl<'a> PeView<'a> {
@@ -62,6 +63,7 @@ impl<'a> PeView<'a> {
             dos_header,
             nt_header,
             sections,
+            data,
         })
     }
 
@@ -165,6 +167,22 @@ impl<'a> PeView<'a> {
         self.directory_table(DataDirectoryType::RelocationTable)
     }
 
+    /// Returns the certificate table
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error if:
+    /// - The [`DataDirectoryType::CertificateTable`] data directory is empty ([`Error::DataDirectoryEmpty`])
+    /// - The certificate table is malformed
+    ///
+    /// As soon as the iterator returned by this function returns an error,
+    /// it is in an unrecoverable invalid state and further usage will result
+    /// in potentially invalid results
+
+    pub fn certificates(&self) -> Result<CertificateTable> {
+        self.directory_table(DataDirectoryType::CertificateTable)
+    }
+
     /// Internal method for abstracting over the process of getting
     /// parsed tables for the raw data contained in the specified data directories
     fn directory_table<T>(&'a self, typ: DataDirectoryType) -> Result<T>
@@ -190,10 +208,12 @@ impl<'a> PeView<'a> {
 
         // Get a slice of the sections raw data which contains the required table
         let bytes = match typ {
-            DataDirectoryType::ExportTable | DataDirectoryType::RelocationTable => {
-                &data.bytes_at(directory.rva as _)?[..directory.size as _]
+            DataDirectoryType::ExportTable
+            | DataDirectoryType::RelocationTable
+            | DataDirectoryType::CertificateTable => {
+                &data.bytes_at(directory.addr as _)?[..directory.size as _]
             }
-            DataDirectoryType::ImportTable => data.bytes_at(directory.rva as _)?,
+            DataDirectoryType::ImportTable => data.bytes_at(directory.addr as _)?,
             _ => unimplemented!(),
         };
 

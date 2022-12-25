@@ -96,3 +96,19 @@ fn it_parses_exports() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+
+#[test]
+fn it_parses_cert() -> Result<(), Box<dyn Error>> {
+    let mut buf = Vec::new();
+    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    let pe = PeView::parse(&buf)?;
+
+    for i in pe.certificates()? {
+        let cert = i?;
+        assert_eq!(cert.value().bytes().len(), 0x2560);
+        assert_eq!(cert.revision(), 0x200);
+        assert_eq!(cert.typ(), 2);
+    }
+
+    Ok(())
+}
