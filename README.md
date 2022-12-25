@@ -22,24 +22,31 @@ fully featured binary parsing libraries when it comes to parsing the PE32+ file 
 Example of printing the RVA's and names of imported symbols:
 
 ```rust
-// Read target file into buffer
-let mut buf = Vec::new();
-File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
-// Initialize the parser, does basic validation
-let pe = PeView::parse(&buf)?;
+use peview::{dir::Import, file::PeView};
+use std::{error::Error, fs::File, io::Read};
 
-// Iterate over modules in the import table
-for m in pe.imports()? {
-    let module = m?;
+fn main() -> Result<(), Box<dyn Error>> {
+    // Read target file into buffer
+    let mut buf = Vec::new();
+    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    // Initialize the parser, does basic validation
+    let pe = PeView::parse(&buf)?;
 
-    // Iterate over symbols within the module
-    for i in module {
-        // Check if the symbol is imported by name
-        if let Import::Name(h, n) = i? {
-            // Print out both the hint and its name
-            println!("{:#04x}: {}", h, n);
+    // Iterate over modules in the import table
+    for m in pe.imports()? {
+        let module = m?;
+
+        // Iterate over symbols within the module
+        for i in module {
+            // Check if the symbol is imported by name
+            if let Import::Name(h, n) = i? {
+                // Print out both the hint and its name
+                println!("{:#04x}: {}", h, n);
+            }
         }
     }
+
+    Ok(())
 }
 ```
 More usage examples can be found [here](https://github.com/kedom1337/peview/blob/master/tests/integration.rs).
