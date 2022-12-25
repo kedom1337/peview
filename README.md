@@ -26,22 +26,23 @@ use peview::{dir::Import, file::PeView};
 use std::{error::Error, fs::File, io::Read};
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // Read target file into buffer
+    // Read file into buffer and parse it
     let mut buf = Vec::new();
     File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
-    // Initialize the parser, does basic validation
     let pe = PeView::parse(&buf)?;
 
     // Iterate over modules in the import table
     for m in pe.imports()? {
+        // Print the current modules name
         let module = m?;
+        println!("{}", module.name()?);
 
         // Iterate over symbols within the module
         for i in module {
             // Check if the symbol is imported by name
             if let Import::Name(h, n) = i? {
                 // Print out both the hint and its name
-                println!("{:#04x}: {}", h, n);
+                println!("> {:#04x}: {}", h, n);
             }
         }
     }
