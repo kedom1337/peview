@@ -119,7 +119,7 @@ impl<'a> PeView<'a> {
         }
     }
 
-    /// Returns the export table
+    /// Returns a fallible iterator over the export table
     ///
     /// # Errors
     ///
@@ -127,15 +127,11 @@ impl<'a> PeView<'a> {
     /// - The [`DataDirectoryType::ExportTable`] data directory is empty ([`Error::DataDirectoryEmpty`])
     /// - The .edata section is empty or not found ([`Error::SectionEmpty`])
     /// - The export table is malformed
-    ///
-    /// As soon as the iterator returned by this function returns an error,
-    /// it is in an unrecoverable invalid state and further usage will result
-    /// in potentially invalid results
     pub fn exports(&self) -> Result<ExportTable> {
         self.directory_table(DataDirectoryType::ExportTable)
     }
 
-    /// Returns the import table
+    /// Returns a fallible iterator over the import table
     ///
     /// # Errors
     ///
@@ -143,15 +139,11 @@ impl<'a> PeView<'a> {
     /// - The [`DataDirectoryType::ImportTable`] data directory is empty ([`Error::DataDirectoryEmpty`])
     /// - The .idata section is empty or not found ([`Error::SectionEmpty`])
     /// - The import table is malformed
-    ///
-    /// As soon as the iterator returned by this function returns an error,
-    /// it is in an unrecoverable invalid state and further usage will result
-    /// in potentially invalid results
     pub fn imports(&self) -> Result<ImportTable> {
         self.directory_table(DataDirectoryType::ImportTable)
     }
 
-    /// Returns the base relocation table
+    /// Returns a fallible iterator over the base relocation table
     ///
     /// # Errors
     ///
@@ -159,26 +151,17 @@ impl<'a> PeView<'a> {
     /// - The [`DataDirectoryType::RelocationTable`] data directory is empty ([`Error::DataDirectoryEmpty`])
     /// - The .reloc section is empty or not found ([`Error::SectionEmpty`])
     /// - The base relocation table is malformed
-    ///
-    /// As soon as the iterator returned by this function returns an error,
-    /// it is in an unrecoverable invalid state and further usage will result
-    /// in potentially invalid results
     pub fn relocations(&self) -> Result<RelocationTable> {
         self.directory_table(DataDirectoryType::RelocationTable)
     }
 
-    /// Returns the certificate table
+    /// Returns a fallible iterator over the certificate table
     ///
     /// # Errors
     ///
     /// This function will return an error if:
     /// - The [`DataDirectoryType::CertificateTable`] data directory is empty ([`Error::DataDirectoryEmpty`])
     /// - The certificate table is malformed
-    ///
-    /// As soon as the iterator returned by this function returns an error,
-    /// it is in an unrecoverable invalid state and further usage will result
-    /// in potentially invalid results
-
     pub fn certificates(&self) -> Result<CertificateTable> {
         self.directory_table(DataDirectoryType::CertificateTable)
     }

@@ -14,7 +14,8 @@ fully featured binary parsing libraries when it comes to parsing the PE32+ file 
 - Taking a zero-copy approach. Everything is a reference to the original data
 - Parsing on demand. Basic parsing is done at the beginning, the rest is opt-in
 - Not focusing on endianness. The parsed buffer is assumed to be in LE
-- Strong validation of native structures
+- Strongly validating native structures according to the [official specification](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format)
+- Having no external dependencies on top of being a `no-std` library
 
 ## Usage
 
@@ -49,7 +50,7 @@ Add the following line to your Cargo.toml file:
 ```toml
 [dependencies]
 # ...
-peview = "0.1.0"
+peview = "0.1.1"
 ```
 
 ## License
