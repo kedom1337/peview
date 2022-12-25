@@ -22,10 +22,10 @@ pub struct Export<'a> {
 
 /// Iterator over the export table located in .edata
 pub struct ExportTable<'a> {
-    data: ByteReader<'a>,
     dir: &'a DataDirectory,
     export_table: Option<&'a ExportDirectoryTable>,
     index: (u16, usize),
+    data: ByteReader<'a>,
 }
 
 impl<'a> ExportTable<'a> {

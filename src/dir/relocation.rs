@@ -19,8 +19,8 @@ pub enum Relocation {
 
 /// Iterator over the entries of a single relocation block
 pub struct RelocationBlock<'a> {
-    data: ByteReader<'a>,
     head: &'a RelocationHead,
+    data: ByteReader<'a>,
 }
 
 impl<'a> RelocationBlock<'a> {

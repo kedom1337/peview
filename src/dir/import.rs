@@ -11,8 +11,8 @@ pub enum Import<'a> {
 
 /// Iterator over the import entries of a single module
 pub struct ImportModule<'a> {
-    data: ByteReader<'a>,
     dir: &'a ImportDirectoryEntry,
+    data: ByteReader<'a>,
 }
 
 impl<'a> ImportModule<'a> {
