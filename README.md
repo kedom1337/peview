@@ -19,7 +19,7 @@ fully featured binary parsing libraries when it comes to parsing the PE32+ file 
 
 ## Usage
 
-Example of printing the RVA's and names of imported symbols
+Example of printing the RVA's and names of imported symbols:
 
 ```rust
 // Read target file into buffer
@@ -41,8 +41,9 @@ for m in pe.imports()? {
         }
     }
 }
-
 ```
+More usage examples can be found [here](https://github.com/kedom1337/peview/blob/master/tests/integration.rs).
+
 ## Installation
 
 Add the following line to your Cargo.toml file:
