@@ -57,7 +57,7 @@ impl<'a> Section<'a> {
         str::from_utf8(self.header.name.as_slice()).unwrap()
     }
 
-    /// Checks if specified flag is contained in the headers characteristics.
+    /// Checks if the specified flag is contained in the headers characteristics.
     pub fn has_flag(&self, flag: SectionFlags) -> bool {
         self.header.characteristics & flag as u32 == 1
     }
