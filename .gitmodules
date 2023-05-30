@@ -1,0 +1,3 @@
+[submodule "etc"]
+	path = etc
+	url = git@github.com:kedom1337/pe_bins.git

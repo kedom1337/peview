@@ -28,7 +28,7 @@ use std::{error::Error, fs::File, io::Read};
 fn main() -> Result<(), Box<dyn Error>> {
     // Read file into buffer and parse it
     let mut buf = Vec::new();
-    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    File::open("etc/exe/ntoskrnl.exe")?.read_to_end(&mut buf)?;
     let pe = PeView::parse(&buf)?;
 
     // Iterate over modules in the import table

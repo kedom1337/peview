@@ -7,7 +7,7 @@ use std::{error::Error, fs::File, io::Read};
 #[test]
 fn it_parses_relocations() -> Result<(), Box<dyn Error>> {
     let mut buf = Vec::new();
-    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    File::open("etc/exe/ntoskrnl.exe")?.read_to_end(&mut buf)?;
     let pe = PeView::parse(&buf)?;
 
     const CHECKED_INDEX: usize = 560;
@@ -39,7 +39,7 @@ fn it_parses_relocations() -> Result<(), Box<dyn Error>> {
 #[test]
 fn it_parses_imports() -> Result<(), Box<dyn Error>> {
     let mut buf = Vec::new();
-    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    File::open("etc/exe/ntoskrnl.exe")?.read_to_end(&mut buf)?;
     let pe = PeView::parse(&buf)?;
 
     const CHECKED_INDEX: usize = 118;
@@ -72,7 +72,7 @@ fn it_parses_imports() -> Result<(), Box<dyn Error>> {
 #[test]
 fn it_parses_exports() -> Result<(), Box<dyn Error>> {
     let mut buf = Vec::new();
-    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    File::open("etc/exe/ntoskrnl.exe")?.read_to_end(&mut buf)?;
     let pe = PeView::parse(&buf)?;
 
     const CHECKED_INDEX: usize = 1987;
@@ -100,7 +100,7 @@ fn it_parses_exports() -> Result<(), Box<dyn Error>> {
 #[test]
 fn it_parses_cert() -> Result<(), Box<dyn Error>> {
     let mut buf = Vec::new();
-    File::open("etc/ntoskrnl.exe")?.read_to_end(&mut buf)?;
+    File::open("etc/exe/ntoskrnl.exe")?.read_to_end(&mut buf)?;
     let pe = PeView::parse(&buf)?;
 
     for i in pe.certificates()? {
