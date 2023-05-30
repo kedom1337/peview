@@ -22,7 +22,7 @@ impl<'a> ImportModule<'a> {
         dir: &'a ImportDirectoryEntry,
     ) -> Self {
         let mut data = ByteReader::new_with_rel(data, data_rva);
-        data.skip(SkipPos::Rel(dir.lookup_rva as _));
+        data.skip_to(Pos::Abs(dir.lookup_rva as _));
 
         Self { data, dir }
     }

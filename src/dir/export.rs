@@ -40,7 +40,7 @@ impl<'a> ExportTable<'a> {
     pub fn export_table(&mut self) -> Result<&'a ExportDirectoryTable> {
         if self.export_table.is_none() {
             let etable = self.data.read::<ExportDirectoryTable>()?.validate()?;
-            self.data.skip(SkipPos::Rel(etable.function_rva as _));
+            self.data.skip_to(Pos::Abs(etable.function_rva as _));
 
             Ok(self.export_table.insert(etable))
         } else {

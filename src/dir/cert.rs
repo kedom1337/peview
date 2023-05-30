@@ -45,7 +45,7 @@ impl<'a> Iterator for CertificateTable<'a> {
                 let data = &self.data.remaining_bytes()
                     [..head.length as usize - mem::size_of::<CertificateHead>()];
 
-                self.data.skip(SkipPos::Cur(
+                self.data.skip_to(Pos::Rel(
                     algin_up(head.length as _, 8)
                         - mem::size_of::<CertificateHead>(),
                 ));

@@ -20,11 +20,11 @@ pub fn str_from_bytes(bytes: &[u8]) -> Result<&str> {
         .map_err(|e| Error::Malformed(e.to_string()))
 }
 
-/// Position to where [`ByteReader`] should advance it's internal buffer to
-pub enum SkipPos {
+/// Used internally to describe a position within a [`ByteReader`]
+pub enum Pos {
+    /// Position is absolute
+    Abs(usize),
     /// Position is relative to the current position
-    Cur(usize),
-    /// Position is relative to the relative position specified with [`ByteReader::new_with_rel`]
     Rel(usize),
 }
 
@@ -89,10 +89,10 @@ impl<'a> ByteReader<'a> {
     }
 
     /// Advances the internal data buffer to the specified position
-    pub fn skip(&mut self, pos: SkipPos) -> &mut Self {
+    pub fn skip_to(&mut self, pos: Pos) -> &mut Self {
         match pos {
-            SkipPos::Cur(v) => self.pos += v,
-            SkipPos::Rel(v) => self.pos = self.pos_to_rel(v),
+            Pos::Abs(v) => self.pos = self.pos_to_rel(v),
+            Pos::Rel(v) => self.pos += self.pos_to_rel(v),
         }
 
         self
@@ -147,7 +147,7 @@ impl<'a> ByteReader<'a> {
 ///
 /// This trait and its operations are only safe for structures which are purely composed of plain
 /// data and have a C-style memory layout aka. #[repr(C)]
-pub unsafe trait FromBytes: Copy {
+pub unsafe trait FromBytes: Copy + 'static {
     /// Returns a reference to a single instance of [`Self`] represented by the specified bytes.
     /// Does not check for correct endianness.
     ///

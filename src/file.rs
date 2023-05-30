@@ -34,12 +34,12 @@ impl<'a> PeView<'a> {
         // Read and validate both the DOS- and NT-header
         let dos_header = data.read::<DosHeader>()?.validate()?;
         let nt_header = data
-            .skip(SkipPos::Rel(dos_header.e_lfanew as _))
+            .skip_to(Pos::Abs(dos_header.e_lfanew as _))
             .read::<NtHeader>()?
             .validate()?;
 
         // Jump to the RVA of the first section header
-        data.skip(SkipPos::Rel(
+        data.skip_to(Pos::Abs(
             dos_header.e_lfanew as usize
                 + mem::size_of::<u32>()
                 + mem::size_of::<FileHeader>()

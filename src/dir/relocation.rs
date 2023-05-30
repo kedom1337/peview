@@ -92,7 +92,7 @@ impl<'a> Iterator for RelocationTable<'a> {
 
                 let data = &self.data.remaining_bytes()
                     [..head.block_size as usize - mem::size_of::<RelocationHead>()];
-                self.data.skip(SkipPos::Cur(data.len()));
+                self.data.skip_to(Pos::Rel(data.len()));
 
                 Some(Ok(RelocationBlock::new(data, head)))
             }
