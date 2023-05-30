@@ -59,7 +59,7 @@ Add the following line to your Cargo.toml file:
 ```toml
 [dependencies]
 # ...
-peview = "0.2.0"
+peview = "0.2.2"
 ```
 
 ## License
