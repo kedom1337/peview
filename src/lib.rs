@@ -1,4 +1,4 @@
-#![feature(error_in_core, cstr_from_bytes_until_nul)]
+#![feature(error_in_core)]
 #![no_std]
 #![doc = include_str!("../README.md")]
 
